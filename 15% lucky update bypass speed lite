@@ -1,0 +1,102 @@
+--[[
+    GERALD_LITE_V8_OBFUSCATED
+    SECURITY_LEVEL: HIGH
+    ENCRYPTION: HEX_STRING_MANGLE
+]]
+
+local _0xL1 = game:GetService("\80\108\97\121\101\114\115")
+local _0xL2 = game:GetService("\82\117\110\83\101\114\118\105\99\101")
+local _0xL3 = _0xL1.LocalPlayer
+local _0xStat = false
+local _0xSpd = 50 
+local _0xJ = 0
+local _0xMJ = 10
+local _0xLuck = 15 -- Updated: 15% Base Luck
+local _0xLJ = 0
+local _0xCD = 45 -- 45s Cooldown
+
+local _0xG = Instance.new("\83\99\114\101\101\110\71\117\105", _0xL3:WaitForChild("\80\108\97\121\101\114\71\117\105"))
+_0xG.Name = "\71\76\86\56"
+_0xG.ResetOnSpawn = false
+
+local _0xM = Instance.new("\70\114\97\109\101", _0xG)
+_0xM.Size = UDim2.new(0, 150, 0, 100)
+_0xM.Position = UDim2.new(0.5, -75, 0.5, -50)
+_0xM.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+_0xM.BorderSizePixel = 0
+_0xM.Active = true; _0xM.Draggable = true
+Instance.new("\85\73\67\111\114\110\101\114", _0xM)
+
+local _0xJT = Instance.new("\84\101\120\116\76\97\98\101\108", _0xM)
+_0xJT.Size = UDim2.new(1, 0, 0.3, 0)
+_0xJT.Text = "\74\117\109\112\115\58\32\48\47\49\48"
+_0xJT.TextColor3 = Color3.fromRGB(200, 200, 200)
+_0xJT.Font = Enum.Font.Code
+_0xJT.TextScaled = true
+_0xJT.BackgroundTransparency = 1
+
+local _0xS = Instance.new("\84\101\120\116\66\117\116\116\111\110", _0xM)
+_0xS.Size = UDim2.new(0.9, 0, 0.5, 0)
+_0xS.Position = UDim2.new(0.05, 0, 0.4, 0)
+_0xS.Text = "\73\78\74\69\67\84"
+_0xS.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+_0xS.TextColor3 = Color3.new(0.4, 0.4, 0.4)
+_0xS.Font = Enum.Font.Code
+_0xS.TextScaled = true
+Instance.new("\85\73\67\111\114\110\101\114", _0xS)
+
+local _0xL = Instance.new("\84\101\120\116\76\97\98\101\108", _0xM)
+_0xL.Size = UDim2.new(1, 0, 1, 0)
+_0xL.Visible = false
+_0xL.TextColor3 = Color3.new(1, 1, 1)
+_0xL.Font = Enum.Font.Code
+_0xL.TextScaled = true
+_0xL.BackgroundTransparency = 1
+
+local function _0xJH(a)
+    if a and _0xJ < _0xMJ then
+        local ct = tick()
+        local tr = math.ceil(_0xCD - (ct - _0xLJ))
+        if ct - _0xLJ >= _0xCD then 
+            _0xJ = _0xJ + 1
+            _0xLJ = ct
+            _0xJT.Text = "\74\117\109\112\115\58\32".._0xJ.."\47\49\48"
+            _0xJT.TextColor3 = Color3.fromRGB(0, 255, 0)
+            if _0xJ >= _0xMJ then
+                _0xJT.Text = "\76\85\67\75\32\66\79\79\83\84\69\68\33"
+                _0xJT.TextColor3 = Color3.fromRGB(0, 255, 255)
+                _0xLuck = 50
+            end
+        else
+            _0xJT.Text = tr.."\115\32\87\65\73\84"
+            _0xJT.TextColor3 = Color3.fromRGB(255, 0, 0)
+        end
+    end
+end
+
+_0xL3.CharacterAdded:Connect(function(c) c:WaitForChild("\72\117\109\97\110\111\105\100").Jumping:Connect(_0xJH) end)
+if _0xL3.Character and _0xL3.Character:FindFirstChild("\72\117\109\97\110\111\105\100") then _0xL3.Character.Humanoid.Jumping:Connect(_0xJH) end
+
+_0xS.MouseButton1Click:Connect(function()
+    _0xS.Visible = false; _0xJT.Visible = false; _0xL.Visible = true
+    for i = 1, 100 do
+        task.wait(math.random(1, 3)/40)
+        _0xL.Text = i .. "\37"
+        _0xL.TextColor3 = Color3.fromHSV(i/100, 1, 1)
+    end
+    if math.random(1, 100) <= _0xLuck then 
+        _0xStat = true
+        _0xL.Text = "\71\82\65\78\84\69\68"
+        _0xM.BackgroundColor3 = Color3.fromRGB(0, 50, 0)
+    else
+        _0xL.Text = "\68\69\78\73\69\68"
+        _0xM.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+        task.wait(2)
+        _0xM.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+        _0xL.Visible = false; _0xS.Visible = true; _0xJT.Visible = true
+    end
+end)
+
+_0xL2.Stepped:Connect(function()
+    if _0xStat then pcall(function() _0xL3.Character.Humanoid.WalkSpeed = _0xSpd end) end
+end)
