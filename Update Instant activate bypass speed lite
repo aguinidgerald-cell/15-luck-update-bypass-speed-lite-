@@ -1,0 +1,52 @@
+--[[
+    GERALD_LITE_V8_MODDED
+    BYPASS: INSTANT ACTIVATE
+    STATUS: JUMP DISABLED
+]]
+
+local _0xL1 = game:GetService("\80\108\97\121\101\114\115")
+local _0xL2 = game:GetService("\82\117\110\83\101\114\118\105\99\101")
+local _0xL3 = _0xL1.LocalPlayer
+local _0xSpd = 50 -- Your WalkSpeed
+
+-- UI NOTIFICATION (PARA ALAM MONG GUMAGANA)
+local _0xG = Instance.new("\83\99\114\101\101\110\71\117\105", _0xL3:WaitForChild("\80\108\97\121\101\114\71\117\105"))
+_0xG.Name = "Gerald_Instant_V8"
+_0xG.ResetOnSpawn = false
+
+local _0xM = Instance.new("\70\114\97\109\101", _0xG)
+_0xM.Size = UDim2.new(0, 150, 0, 50)
+_0xM.Position = UDim2.new(0.5, -75, 0.1, 0)
+_0xM.BackgroundColor3 = Color3.fromRGB(0, 50, 0)
+Instance.new("\85\73\67\111\114\110\101\114", _0xM)
+
+local _0xL = Instance.new("\84\101\120\116\76\97\98\101\108", _0xM)
+_0xL.Size = UDim2.new(1, 0, 1, 0)
+_0xL.Text = "INSTANT GRANTED"
+_0xL.TextColor3 = Color3.new(1, 1, 1)
+_0xL.Font = Enum.Font.Code; _0xL.TextScaled = true; _0xL.BackgroundTransparency = 1
+
+-- INSTANT PHYSICS UPDATE (NO JUMP)
+local function _0xApply(char)
+    local hum = char:WaitForChild("\72\117\109\97\110\111\105\100")
+    hum.WalkSpeed = _0xSpd
+    hum.JumpPower = 0 -- TINANGGAL ANG JUMP
+    print("Gerald Lite: Speed Applied, Jump Disabled.")
+end
+
+-- AUTO-APPLY ON SPAWN
+_0xL3.CharacterAdded:Connect(_0xApply)
+if _0xL3.Character then _0xApply(_0xL3.Character) end
+
+-- STEPPED SYNC (PARA HINDI MA-OVERRIDE NG GAME)
+_0xL2.Stepped:Connect(function()
+    pcall(function() 
+        if _0xL3.Character and _0xL3.Character:FindFirstChild("Humanoid") then
+            _0xL3.Character.Humanoid.WalkSpeed = _0xSpd
+            _0xL3.Character.Humanoid.JumpPower = 0 -- Double check para sigurado
+        end
+    end)
+end)
+
+-- AUTO-CLEAN UI
+task.delay(3, function() _0xG:Destroy() end)
